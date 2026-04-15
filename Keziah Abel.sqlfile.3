@@ -1,0 +1,118 @@
+/* This is week five of FadaQa Data Analysis internship focusing on achieving two goals.
+The first is to get answers
+The second is to see how some SQL statements work*/
+
+-- 1. Show all records in the dataset
+SELECT *
+FROM Historical_Pandemic_Epidemic_Dataset;
+
+-- 2. Find the distinct WHO classification of diseases.
+SELECT DISTINCT who_classificati
+FROM Historical_Pandemic_Epidemic_Dataset;
+
+-- 3. Find the distinct pathogen type.
+SELECT DISTINCT pathogen_type
+FROM Historical_Pandemic_Epidemic_Dataset;
+
+-- 4. Find all diseases that started after 2015.
+SELECT event_name, start_year
+FROM Historical_Pandemic_Epidemic_Dataset
+WHERE start_year > 2015;
+
+-- 5. Find all diseases that lasted between 2000 and 2024.
+SELECT event_name, start_year
+FROM Historical_Pandemic_Epidemic_Dataset
+WHERE start_year between 2000 AND 2024;
+
+-- 6. Find diseases that originated from Africa.
+SELECT event_name, start_year
+FROM Historical_Pandemic_Epidemic_Dataset
+WHERE origin_region = 'Africa';
+
+-- 7. Find names of diseases that contains string Africa in them.
+SELECT event_name
+FROM Historical_Pandemic_Epidemic_Dataset
+WHERE event_name LIKE '%africa%';
+
+-- 8. Find diseases that are either high, catastrophic or low.
+SELECT event_name, mortality_scale
+FROM Historical_Pandemic_Epidemic_Dataset
+WHERE mortality_scale IN ('High', 'Catastrophic', 'Low');
+
+-- 9. Count diseases by transmission method.
+SELECT primary_transmis, COUNT (*) AS number_of_primary_transmission
+FROM Historical_Pandemic_Epidemic_Dataset
+GROUP BY primary_transmis;
+
+-- 10. Calculate the total estimated deaths from all the diseases.
+SELECT SUM(estimated_deaths)
+FROM Historical_Pandemic_Epidemic_Dataset;
+
+-- 11. Find the diseases with the highest estimated deaths.
+SELECT MAX(estimated_deaths)
+FROM Historical_Pandemic_Epidemic_Dataset;
+
+-- 12. Find the diseases with the highest estimated deaths.
+SELECT event_name, estimated_deaths
+FROM Historical_Pandemic_Epidemic_Dataset
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 5;
+
+-- 13. Find the names of diseases as the year advance. 
+SELECT event_name, start_year
+FROM Historical_Pandemic_Epidemic_Dataset
+GROUP BY 1
+ORDER BY 2 ASC;
+
+-- 14. Which containment method appeared more than two times. 
+SELECT containment_meth, COUNT(*) AS number_of_containment_method
+FROM Historical_Pandemic_Epidemic_Dataset
+GROUP BY containment_meth
+HAVING COUNT(*) > 2
+ORDER BY 2 DESC
+LIMIT 5;
+
+-- 15. Which containment method appeared less than two times. 
+SELECT containment_meth, COUNT(*) AS number_of_containment_method
+FROM Historical_Pandemic_Epidemic_Dataset
+GROUP BY containment_meth
+HAVING COUNT(*) < 2
+ORDER BY 2 DESC
+LIMIT 10;
+
+-- 16. Categorise names of diseases by severity using the estimated deaths. 
+SELECT event_name,
+       estimated_deaths,
+       CASE WHEN estimated_deaths BETWEEN 1 AND 536.25 THEN 'Very Low Death Case'
+            WHEN estimated_deaths BETWEEN 536.25 and 25000 THEN 'Low Death Case'
+            WHEN estimated_deaths BETWEEN 25000 AND 1025000 THEN 'High Death Case'
+            WHEN estimated_deaths BETWEEN 1025000 AND 75000000 THEN 'Exteremly High Death Case'
+            END AS estimated_death_category
+ FROM Historical_Pandemic_Epidemic_Dataset
+ GROUP BY event_name;
+
+-- 17. Calculate the percentage of historical outbreaks that are viral. 
+SELECT 
+     (COUNT(CASE WHEN pathogen_type = 'Virus' THEN 1 END) * 100/ COUNT(*)) AS Viral_percentage
+FROM Historical_Pandemic_Epidemic_Dataset;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
